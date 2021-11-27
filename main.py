@@ -114,9 +114,34 @@ recur(root_node)
 print('li==================================================================================================================================================')
 
 print(required_files[0])
+
+
+def validate(string):
+    invalid_list = []
+
+    if string[0] == '_' or string[-1] == '_':
+        if 'External Underscores' not in invalid_list:
+            invalid_list.append('External Underscores')
+
+    if string not in ('c','d','e','g','in','inOut', 'j', 'k', 'm', 'n', 'o', 'out', 't', 'x', 'y', 'z'):
+        if len(string) < 8:
+            if 'Short Identifier Name' not in invalid_list:
+                invalid_list.append('Short Identifier Name')
+    if '__' in string:
+        if 'Consecutive Underscores' not in invalid_list:
+            invalid_list.append('Consecutive Underscores')
+
+    return invalid_list
+
+
+
+
+
+
 with open(required_files[0], "r") as f:
     code_file = f.readlines()
     output1_list = []
+    output2_list = []
     print("asjfljasl;f")
     print(code_file[0])
     print(code_file[1])
@@ -130,23 +155,34 @@ with open(required_files[0], "r") as f:
 
 
         name_identifier = code_file[line_number][start_index:end_index]
+        h = validate(name_identifier)
 
         output1_list.append('Identifier: '+str(name_identifier)+ '   line number: '+ str(line_number) +'   Start index: '+ str(start_index) + '    End index: ' + str(end_index))
+
+        if len(h) !=0:
+            output2_list.append('Identifier: '+str(name_identifier)+ '   line number: '+ str(line_number) +'   Start index: '+ str(start_index) + '    End index: ' + str(end_index) + '   Violated Rules: '+ str(h))
 
 
 
     # open text file
     output1 = open("./Output1.txt", "w")
-    # output2 = open("./Output1.txt", "w")
+    output2 = open("./Output2.txt", "w")
     output1.write('')
+    output2.write('')
     # output1.write('Hello World!')
     # dictionary = {'item': 1, 'cursor': 5}
     for i in range(len(output1_list)):
         # identifier
-        output1.write("%s : " % i)
+        # output1.write("%s : " % i)
         # location
         output1.write("%s \n" % output1_list[i])
 
+    for j in range(len(output2_list)):
+        # identifier
+        # output1.write("%s : " % j)
+        # location
+        output2.write("%s \n" % output2_list[j])
+
     # close file
     output1.close()
-    # output2.close()
+    output2.close()
